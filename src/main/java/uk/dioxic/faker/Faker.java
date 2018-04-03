@@ -44,7 +44,7 @@ public class Faker {
         if (countryStream != null) {
             faker.load(yaml.loadAll(countryStream));
         }
-        else {
+        else if (locale.getCountry() != null && !locale.getCountry().isEmpty()) {
             logger.warn("Locale country [{}] not supported, using base language [{}]", locale.getCountry(), locale.getLanguage());
         }
 
