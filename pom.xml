@@ -28,7 +28,7 @@
     <scm>
         <connection>scm:git:git://github.com/dioxic/faker4j.git</connection>
         <developerConnection>scm:git:git@github.com:dioxic/faker4j.git</developerConnection>
-        <url>git://github.com/DiUS/java-faker.git</url>
+        <url>git://github.com/dioxic/faker4j.git</url>
     </scm>
     <developers>
         <developer>
