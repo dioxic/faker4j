@@ -51,7 +51,7 @@ public class FakerTest {
 
     @Test
     public void fakerLocaleTest() {
-        for (Locale locale : Locale.getAvailableLocales()) {
+        for (Locale locale : Lists.newArrayList(Locale.ENGLISH, Locale.UK, Locale.US, Locale.FRENCH, Locale.GERMAN, Locale.ITALIAN)) {
             try {
                 Faker faker = Faker.instance(locale);
 
