@@ -116,6 +116,10 @@ public class Faker {
         return null;
     }
 
+    public boolean contains(String key) {
+        return globalMap.containsKey(key);
+    }
+
     public Map<String, Object> getGlobalMap() {
         return Collections.unmodifiableMap(globalMap);
     }
