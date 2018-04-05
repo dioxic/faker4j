@@ -25,7 +25,7 @@ public class Faker {
         put("IDNumber.invalid_sv_se_ssn", "###-##-####");
     }
 
-    public static final Faker instance(Locale locale) {
+    public static Faker instance(Locale locale) {
         InputStream langStream = getDefinitionStream(locale.getLanguage());
         InputStream countryStream = getDefinitionStream(locale.getLanguage() + "-" + locale.getCountry().toUpperCase());
 
@@ -51,7 +51,7 @@ public class Faker {
         return faker;
     }
 
-    public static final Faker instance(InputStream... streams) {
+    public static Faker instance(InputStream... streams) {
         Yaml yaml = new Yaml();
         Faker faker = new Faker();
         for (InputStream stream : streams) {
@@ -64,7 +64,7 @@ public class Faker {
         return faker;
     }
 
-    public static final Faker instance(String... fakerFiles) throws IOException {
+    public static Faker instance(String... fakerFiles) throws IOException {
         Yaml yaml = new Yaml();
         Faker faker = new Faker();
         for (String fakerFile : fakerFiles) {
@@ -124,6 +124,7 @@ public class Faker {
         return Collections.unmodifiableMap(globalMap);
     }
 
+    @SuppressWarnings("unchecked")
     protected void put(String key, Object o) {
         if (o instanceof Map) {
             Map<String, Object> localMap = ((Map) o);
@@ -153,6 +154,7 @@ public class Faker {
         return newKey.replace('-', '_');
     }
 
+    @SuppressWarnings("unchecked")
     private static Object findFakerPath(Object o) {
         Object path = null;
 

@@ -6,7 +6,12 @@
 
     <groupId>uk.dioxic.faker4j</groupId>
     <artifactId>faker4j</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.1</version>
+
+    <name>faker4j</name>
+    <description>A fast faker implementation designed for load testing.</description>
+    <url>https://github.com/dioxic/faker4j</url>
+
 
     <properties>
         <junit.jupiter.version>5.1.0</junit.jupiter.version>
@@ -25,11 +30,13 @@
             <distribution>repo</distribution>
         </license>
     </licenses>
+
     <scm>
         <connection>scm:git:git://github.com/dioxic/faker4j.git</connection>
         <developerConnection>scm:git:git@github.com:dioxic/faker4j.git</developerConnection>
         <url>git://github.com/dioxic/faker4j.git</url>
     </scm>
+
     <developers>
         <developer>
             <id>dioic</id>
