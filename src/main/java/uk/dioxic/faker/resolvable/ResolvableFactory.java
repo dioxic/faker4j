@@ -11,13 +11,13 @@ public class ResolvableFactory {
     public Resolvable<String> create(Object object, String key, Faker faker) {
         Object o = createOptional(object, key, faker);
 
-        return (o instanceof Resolvable) ? (Resolvable<String>) o : new StringWrapperResolver(o.toString());
+        return (o instanceof Resolvable) ? (Resolvable<String>) o : new StringWrapperResolver((String)o);
     }
 
     private Object createOptional(Object object, String key, Faker faker) {
         if (object instanceof List) {
             List<?> list = (List) object;
-            list = list.stream().map(o -> createOptional(o, key, faker)).collect(Collectors.toList());
+            list = list.stream().map(o -> createOptional(o, key, faker)).filter(o -> o != null).collect(Collectors.toList());
             return new ListResolver(list);
         }
 
