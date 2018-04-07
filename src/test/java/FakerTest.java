@@ -4,11 +4,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.dioxic.faker.Faker;
 import uk.dioxic.faker.exception.LocaleDoesNotExistException;
-import uk.dioxic.faker.resolvable.FormatResolver;
-import uk.dioxic.faker.resolvable.RegexResolver;
 
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 import java.util.regex.Pattern;
@@ -18,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class FakerTest {
 
-    private Logger logger = LoggerFactory.getLogger(getClass());
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Test
     public void fakerTest() throws IOException {
@@ -30,7 +28,7 @@ public class FakerTest {
 
         faker.getGlobalMap().entrySet()
                 .stream()
-                .map(e -> e.toString())
+                .map(Object::toString)
                 .forEach(logger::debug);
 
         assertThat(faker.get("name.prefix")).as("name.prefix").isIn(namePrefixes);
@@ -57,7 +55,7 @@ public class FakerTest {
 
                 Stream.generate(() -> faker.getGlobalMap().entrySet())
                         .limit(5)
-                        .flatMap(es -> es.stream())
+                        .flatMap(Collection::stream)
                         .forEach(f -> logger.debug("{} = {}", f.getKey(), faker.get(f.getKey())));
             }
             catch (LocaleDoesNotExistException e){

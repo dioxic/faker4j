@@ -1,23 +1,23 @@
 package uk.dioxic.faker;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import uk.dioxic.faker.resolvable.FakerStringResolver;
-import uk.dioxic.faker.resolvable.FormatResolver;
-import uk.dioxic.faker.resolvable.ListResolver;
-import uk.dioxic.faker.resolvable.RegexResolver;
+import uk.dioxic.faker.resolvable.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class ResolvableFactory {
 
-    private Logger logger = LoggerFactory.getLogger(getClass());
+    @SuppressWarnings("unchecked")
+    public Resolvable create(Object object, String key, Faker faker) {
+        Object o = createOptional(object, key, faker);
 
-    public Object create(Object object, String key, Faker faker) {
+        return (o instanceof Resolvable) ? (Resolvable) o : new GenericResolver(o);
+    }
+
+    private Object createOptional(Object object, String key, Faker faker) {
         if (object instanceof List) {
             List<?> list = (List) object;
-            list = list.stream().map(o -> create(o, key, faker)).collect(Collectors.toList());
+            list = list.stream().map(o -> createOptional(o, key, faker)).collect(Collectors.toList());
             return new ListResolver(list);
         }
 

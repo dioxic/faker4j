@@ -16,7 +16,7 @@ import java.util.*;
 public class Faker {
 
     private final static Logger logger = LoggerFactory.getLogger(Faker.class);
-    private final Map<String, Object> globalMap = new HashMap<>();
+    private final Map<String, Resolvable> globalMap = new HashMap<>();
     private final ResolvableFactory factory = new ResolvableFactory();
 
     protected Faker() {
@@ -91,14 +91,10 @@ public class Faker {
     }
 
     public String get(String key) {
-        Object obj = globalMap.get(key.toLowerCase());
-
-        if (obj instanceof Resolvable) {
-            obj = ((Resolvable) obj).resolve();
-        }
+        Resolvable obj = globalMap.get(key.toLowerCase());
 
         if (obj != null) {
-            return obj.toString();
+            return obj.resolve().toString();
         }
         else {
             logger.warn("could not resolve pattern [{}]", key);
@@ -107,13 +103,7 @@ public class Faker {
     }
 
     public Resolvable getResolvable(String key) {
-        Object obj = globalMap.get(key.toLowerCase());
-
-        if (obj instanceof Resolvable) {
-            return (Resolvable)obj;
-        }
-
-        return null;
+        return globalMap.get(key.toLowerCase());
     }
 
     public boolean contains(String key) {
@@ -139,7 +129,7 @@ public class Faker {
             globalMap.put(key.toLowerCase(), factory.create(o, key, this));
         }
         else if (o instanceof Resolvable) {
-            globalMap.put(key.toLowerCase(), o);
+            globalMap.put(key.toLowerCase(), (Resolvable) o);
         }
         else {
             if (key != null) {

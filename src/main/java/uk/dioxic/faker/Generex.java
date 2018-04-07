@@ -122,7 +122,6 @@ public class Generex {
         Matcher matcher = patternRequoted.matcher(sb);
         while (matcher.find()) {
             sb.replace(matcher.start(), matcher.end(), patternSpecial.matcher(matcher.group(1)).replaceAll("\\\\$0"));
-            //matcher.reset();
         }
         return sb.toString();
     }

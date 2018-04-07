@@ -11,10 +11,10 @@ public class ListResolver implements Resolvable {
     }
 
     @Override
-    public Object resolve() {
+    public String resolve() {
         Object result = from.get(ThreadLocalRandom.current().nextInt(from.size()));
 
-        return result instanceof Resolvable ? ((Resolvable)result).resolve() : result;
+        return (result instanceof Resolvable) ? ((Resolvable)result).resolve().toString() : result.toString();
     }
 
     @Override
