@@ -6,7 +6,7 @@
 
     <groupId>uk.dioxic.faker4j</groupId>
     <artifactId>faker4j</artifactId>
-    <version>0.0.3-SNAPSHOT</version>
+    <version>0.0.3</version>
 
     <name>faker4j</name>
     <description>A fast faker implementation designed for load testing.</description>
