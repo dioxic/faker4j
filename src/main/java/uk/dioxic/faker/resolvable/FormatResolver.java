@@ -2,7 +2,7 @@ package uk.dioxic.faker.resolvable;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-public class FormatResolver implements Resolvable<String> {
+class FormatResolver implements Resolvable<String> {
 
     private final String pattern;
 

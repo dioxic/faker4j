@@ -3,7 +3,7 @@ package uk.dioxic.faker.resolvable;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class ListResolver implements Resolvable {
+class ListResolver implements Resolvable {
     private final List from;
 
     public ListResolver(List from) {

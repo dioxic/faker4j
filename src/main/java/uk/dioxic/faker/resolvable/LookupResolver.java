@@ -2,7 +2,7 @@ package uk.dioxic.faker.resolvable;
 
 import uk.dioxic.faker.Faker;
 
-public class LookupResolver implements Resolvable<String> {
+class LookupResolver implements Resolvable<String> {
 
     private final String lookupKey;
     private final Faker faker;

@@ -3,7 +3,7 @@ package uk.dioxic.faker.resolvable;
 
 import uk.dioxic.faker.Generex;
 
-public class RegexResolver implements Resolvable<String> {
+class RegexResolver implements Resolvable<String> {
 
     private final String regex;
     private final Generex generex;

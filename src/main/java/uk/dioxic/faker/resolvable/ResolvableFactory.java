@@ -1,6 +1,6 @@
-package uk.dioxic.faker;
+package uk.dioxic.faker.resolvable;
 
-import uk.dioxic.faker.resolvable.*;
+import uk.dioxic.faker.Faker;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -8,10 +8,10 @@ import java.util.stream.Collectors;
 public class ResolvableFactory {
 
     @SuppressWarnings("unchecked")
-    public Resolvable create(Object object, String key, Faker faker) {
+    public Resolvable<String> create(Object object, String key, Faker faker) {
         Object o = createOptional(object, key, faker);
 
-        return (o instanceof Resolvable) ? (Resolvable) o : new GenericResolver(o);
+        return (o instanceof Resolvable) ? (Resolvable<String>) o : new StringWrapperResolver(o.toString());
     }
 
     private Object createOptional(Object object, String key, Faker faker) {

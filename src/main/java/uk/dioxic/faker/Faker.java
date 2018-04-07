@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.Yaml;
 import uk.dioxic.faker.exception.LocaleDoesNotExistException;
 import uk.dioxic.faker.resolvable.Resolvable;
+import uk.dioxic.faker.resolvable.ResolvableFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,7 +17,7 @@ import java.util.*;
 public class Faker {
 
     private final static Logger logger = LoggerFactory.getLogger(Faker.class);
-    private final Map<String, Resolvable> globalMap = new HashMap<>();
+    private final Map<String, Resolvable<String>> globalMap = new HashMap<>();
     private final ResolvableFactory factory = new ResolvableFactory();
 
     protected Faker() {
@@ -91,10 +92,10 @@ public class Faker {
     }
 
     public String get(String key) {
-        Resolvable obj = globalMap.get(key.toLowerCase());
+        Resolvable<String> obj = globalMap.get(key.toLowerCase());
 
         if (obj != null) {
-            return obj.resolve().toString();
+            return obj.resolve();
         }
         else {
             logger.warn("could not resolve pattern [{}]", key);
@@ -102,7 +103,7 @@ public class Faker {
         }
     }
 
-    public Resolvable getResolvable(String key) {
+    public Resolvable<String> getResolvable(String key) {
         return globalMap.get(key.toLowerCase());
     }
 
