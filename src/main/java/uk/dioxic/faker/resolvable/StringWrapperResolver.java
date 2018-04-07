@@ -1,6 +1,6 @@
 package uk.dioxic.faker.resolvable;
 
-class StringWrapperResolver implements Resolvable<String> {
+public class StringWrapperResolver implements Resolvable<String> {
 
     private final String value;
 

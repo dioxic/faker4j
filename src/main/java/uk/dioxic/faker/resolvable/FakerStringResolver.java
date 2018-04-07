@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-class FakerStringResolver implements Resolvable<String> {
+public class FakerStringResolver implements Resolvable<String> {
     private final static Pattern LOOKUP_PATTERN = Pattern.compile("#\\{([a-z0-9A-Z_.]+)\\s?(?:'([^']+)')*}");
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
