@@ -13,6 +13,7 @@ import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.function.Function;
 
 public class Faker {
 
@@ -27,42 +28,42 @@ public class Faker {
     }
 
     public static Faker instance(Locale locale) {
-        InputStream langStream = getDefinitionStream(locale.getLanguage());
-        InputStream countryStream = getDefinitionStream(locale.getLanguage() + "-" + locale.getCountry().toUpperCase());
-
-        if (countryStream == null && langStream == null) {
-            throw new LocaleDoesNotExistException("locale [" + locale.toString() + "] not supported");
+        if (locale == null) {
+            throw new IllegalArgumentException("locale cannot be null");
         }
 
-        Yaml yaml = new Yaml();
         Faker faker = new Faker();
 
-        logger.info("loading faker definitions for {}", locale);
-
-        if (langStream != null) {
-            faker.load(yaml.loadAll(langStream));
-        }
-        if (countryStream != null) {
-            faker.load(yaml.loadAll(countryStream));
-        }
-        else if (locale.getCountry() != null && !locale.getCountry().isEmpty()) {
-            logger.warn("Locale country [{}] not supported, using base language [{}]", locale.getCountry(), locale.getLanguage());
-        }
+        faker.loadFromResource(locale);
 
         return faker;
     }
 
-    public static Faker instance(InputStream... streams) {
-        Yaml yaml = new Yaml();
-        Faker faker = new Faker();
-        for (InputStream stream : streams) {
-            if (stream == null) {
-                throw new IllegalStateException("stream cannot be null!");
+    interface LocaleResource {
+        String resourceName(Locale locale);
+    }
+
+    private LocaleResource languageResource = (locale) -> "locale/" + locale.getLanguage() + ".yml";
+    private LocaleResource countryResource = (locale) -> "locale/" + locale.getLanguage() + "-" + locale.getCountry().toUpperCase() + ".yml";
+
+    private void loadFromResource(Locale locale) {
+        try (InputStream languageStream = Faker.class.getModule().getResourceAsStream(languageResource.resourceName(locale));
+             InputStream countryStream = Faker.class.getModule().getResourceAsStream(countryResource.resourceName(locale))) {
+            if (languageStream != null) {
+                logger.info("loading faker definitions for {}", locale.getDisplayLanguage());
+                load(new Yaml().loadAll(languageStream));
             }
-            logger.info("loading faker definitions from stream");
-            faker.load(yaml.loadAll(stream));
+            if (countryStream != null) {
+                logger.info("loading faker definitions for {}", locale.getDisplayCountry());
+                load(new Yaml().loadAll(countryStream));
+            }
+            else if (!locale.getDisplayCountry().isEmpty()) {
+                logger.warn("Locale country [{}] not supported, using base language [{}]", locale.getDisplayCountry(), locale.getDisplayLanguage());
+            }
+
+        } catch (IOException e) {
+            throw new RuntimeException();
         }
-        return faker;
     }
 
     public static Faker instance(String... fakerFiles) throws IOException {
@@ -71,24 +72,19 @@ public class Faker {
         for (String fakerFile : fakerFiles) {
             logger.info("loading faker definitions from {}", fakerFile);
             Files.newBufferedReader(Paths.get(fakerFile));
-            Reader reader = Files.newBufferedReader(Paths.get(fakerFile));
-            faker.load(yaml.loadAll(reader));
+            try (Reader reader = Files.newBufferedReader(Paths.get(fakerFile))) {
+                faker.load(yaml.loadAll(reader));
+            }
         }
         return faker;
     }
 
-    private static InputStream getDefinitionStream(String filename) {
-        String filenameWithExtension = "locale/" + filename + ".yml";
-        InputStream streamOnClass = Faker.class.getResourceAsStream(filenameWithExtension);
-        if (streamOnClass == null) {
-            streamOnClass = Faker.class.getClassLoader().getResourceAsStream(filenameWithExtension);
-        }
-
-        return streamOnClass;
-    }
-
     protected void load(Iterable<Object> yamlDefinition) {
         put(null, findFakerPath(yamlDefinition));
+    }
+
+    public boolean isEmpty() {
+        return globalMap.isEmpty();
     }
 
     public String get(String key) {
@@ -101,10 +97,6 @@ public class Faker {
             logger.warn("could not resolve pattern [{}]", key);
             return key;
         }
-    }
-
-    public Resolvable<String> getResolvable(String key) {
-        return globalMap.get(key.toLowerCase());
     }
 
     public boolean contains(String key) {

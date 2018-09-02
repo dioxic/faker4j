@@ -49,7 +49,7 @@ public class FakerTest {
 
     @Test
     public void fakerLocaleTest() {
-        for (Locale locale : Lists.newArrayList(Locale.ENGLISH, Locale.UK, Locale.US, Locale.FRENCH, Locale.GERMAN, Locale.ITALIAN)) {
+        for (Locale locale : Lists.newArrayList(Locale.ENGLISH, Locale.UK, Locale.US, Locale.FRENCH, Locale.GERMAN, Locale.ITALIAN, Locale.CANADA_FRENCH)) {
             try {
                 Faker faker = Faker.instance(locale);
 
