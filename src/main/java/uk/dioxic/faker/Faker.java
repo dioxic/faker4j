@@ -47,8 +47,8 @@ public class Faker {
     private LocaleResource countryResource = (locale) -> "locale/" + locale.getLanguage() + "-" + locale.getCountry().toUpperCase() + ".yml";
 
     private void loadFromResource(Locale locale) {
-        try (InputStream languageStream = Faker.class.getModule().getResourceAsStream(languageResource.resourceName(locale));
-             InputStream countryStream = Faker.class.getModule().getResourceAsStream(countryResource.resourceName(locale))) {
+        try (InputStream languageStream = Faker.class.getClassLoader().getResourceAsStream(languageResource.resourceName(locale));
+             InputStream countryStream = Faker.class.getClassLoader().getResourceAsStream(countryResource.resourceName(locale))) {
             if (languageStream != null) {
                 logger.info("loading faker definitions for {}", locale.getDisplayLanguage());
                 load(new Yaml().loadAll(languageStream));
