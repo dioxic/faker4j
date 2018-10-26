@@ -6,7 +6,7 @@
 
     <groupId>uk.dioxic.faker4j</groupId>
     <artifactId>faker4j</artifactId>
-    <version>0.0.4-SNAPSHOT</version>
+    <version>0.0.4</version>
 
     <name>faker4j</name>
     <description>A fast faker implementation designed for load testing.</description>
@@ -181,7 +181,6 @@
                         <version>3.0.1</version>
                         <configuration>
                             <javadocExecutable>${java.home}/bin/javadoc</javadocExecutable>
-                            <javadocVersion>fdgdfg9</javadocVersion>
                         </configuration>
                         <executions>
                             <execution>
